@@ -1,0 +1,6 @@
+//The application must make use of a third-party API and use the results to change the DOM.You will need to choose the API you wish to use and how you will use the data.
+
+// API Src: http://api.football-data.org/index
+//Our API will display world soccer data profiles: teams, players, etc
+//Users will be able to search for soccer information, click on results to see more data about search query
+//Wireframe - see PDF
