@@ -1,16 +1,21 @@
-var season_hash_map = {};
+var leagueHashMap = {};
+var teamHashMap = {};
+var data = [];
 
 $(function() {
-    getSeasons();
+    loadSite();
     $('.home-search').submit(function(event) {
         event.preventDefault();
-
         var searchTerm = $('.form-control').val();
-        getTeam(season_hash_map[searchTerm]);
+        getLeague(leagueHashMap[searchTerm]);
+    });
+    $('.results').on('click', 'a', function(){
+        console.log(this.text);
+        console.log(teamHashMap);
     });
 });
 
-function getSeasons(searchTerm) {
+function loadSite() {
     $.ajax({
         headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
         url: 'http://api.football-data.org/v1/soccerseasons',
@@ -18,12 +23,13 @@ function getSeasons(searchTerm) {
         type: 'GET',
     }).done(function(response) {
         // do something with the response, e.g. isolate the id of a linked resource
-        console.log(response, '<---RESPONSE-Season');
-        var data = [];
-        season_hash_map = {};
-        $.each(response, function (key, value) {
+        // console.log(response, '<---RESPONSE-Season');
+
+        data = [];
+        leagueHashMap = {};
+        $.each(response, function(key, value) {
             data.push(value.caption);
-            season_hash_map[value.caption] = value.id;
+            leagueHashMap[value.caption] = value.id;
         });
         var options = {
             data: data,
@@ -39,17 +45,65 @@ function getSeasons(searchTerm) {
     });
 }
 
-function getTeam(teamID) {
+function getLeague(seasonID) {
     $.ajax({
         headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
-        url: 'http://api.football-data.org/v1/soccerseasons/' + teamID + '/teams',
+        url: 'http://api.football-data.org/v1/soccerseasons/' + seasonID + '/teams',
         dataType: 'json',
         type: 'GET',
     }).done(function(response) {
-        // do something with the response, e.g. isolate the id of a linked resource
-        console.log(response, '<---RESPONSE-Team');
-        $.each(response.teams, function (key, value) {
-            $('.results').append('<p>' + value.name + '</p>');
+        // console.log(response);
+        $('.results').html('');
+
+        teamHashMap = {};
+        $.each(response.teams, function(key, value) {
+            var hrefTeams = value._links.fixtures.href;
+            var teamID = hrefTeams.match(/\d/g).join("").slice(1);
+            teamHashMap[value.name] = teamID;
+            // console.log(teamID, value.name, "TEAMID AND VALUE.NAME");
+            var league = showLeague(value.name);
+            // console.log(league);
+            
+            // $('.results').append(league);
+            $('.results').append(league);
         });
     });
 }
+
+// function getTeam(seasonID) {
+//     $.ajax({
+//         headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
+//         url: 'http://api.football-data.org/v1/soccerseasons/' + seasonID + '/teams',
+//         dataType: 'json',
+//         type: 'GET',
+//     }).done(function(response) {
+//         // console.log(response);
+//         $('.results').html('');
+
+//         teamHashMap = {};
+//         $.each(response.teams, function(key, value) {
+//             var hrefTeams = value._links.fixtures.href;
+//             var teamID = hrefTeams.match(/\d/g).join("").slice(1);
+//             teamHashMap[value.name] = teamID;
+//             // console.log(teamID, value.name, "TEAMID AND VALUE.NAME");
+//             var league = showLeague(value.name);
+//             // console.log(league);
+            
+//             // $('.results').append(league);
+//             $('.results').append(league);
+//         });
+//     });
+// }
+
+function showLeague (name) {
+    var link = '<div><a>' + name + '</a></div>';
+    return link;
+    // return result;
+}
+
+// function showTeam (id, name) {
+//     var copy = $('.template .team').clone();
+//     var link = '<p><a target="_blank" ' + 'href="http://api.football-data.org/v1/teams/' + id + '">' + name + '</a></p>';
+//     return link;
+//     // return result;
+// }
