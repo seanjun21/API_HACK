@@ -1,7 +1,14 @@
+// Set hash maps to be used later 
 var leagueHashMap = {};
 var teamHashMap = {};
+
+// Set data to be used later (for easyautocomplete)
 var data = [];
 
+// Set searchTerm to be used later
+var searchTerm;
+
+// Code Body
 $(function() {
     loadSite();
     $('.home-search').submit(function(event) {
@@ -9,12 +16,18 @@ $(function() {
         var searchTerm = $('.form-control').val();
         getLeague(leagueHashMap[searchTerm]);
     });
-    $('.results').on('click', 'a', function(){
-        console.log(this.text);
-        console.log(teamHashMap);
+    $('.results').on('click', '.clubs', function(event) {
+        event.preventDefault();
+        searchTerm = $(this).text();
+        getTeam(teamHashMap[searchTerm]);
+    });
+    $('.results').on('click', '.players-detail', function(event) {
+        event.preventDefault();
+        getPlayer(teamHashMap[searchTerm]);
     });
 });
 
+// Loading website
 function loadSite() {
     $.ajax({
         headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
@@ -22,8 +35,6 @@ function loadSite() {
         dataType: 'json',
         type: 'GET',
     }).done(function(response) {
-        // do something with the response, e.g. isolate the id of a linked resource
-        // console.log(response, '<---RESPONSE-Season');
 
         data = [];
         leagueHashMap = {};
@@ -45,14 +56,14 @@ function loadSite() {
     });
 }
 
-function getLeague(seasonID) {
+// Get league data from API
+function getLeague(leagueID) {
     $.ajax({
         headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
-        url: 'http://api.football-data.org/v1/soccerseasons/' + seasonID + '/teams',
+        url: 'http://api.football-data.org/v1/soccerseasons/' + leagueID + '/teams',
         dataType: 'json',
         type: 'GET',
     }).done(function(response) {
-        // console.log(response);
         $('.results').html('');
 
         teamHashMap = {};
@@ -60,50 +71,95 @@ function getLeague(seasonID) {
             var hrefTeams = value._links.fixtures.href;
             var teamID = hrefTeams.match(/\d/g).join("").slice(1);
             teamHashMap[value.name] = teamID;
-            // console.log(teamID, value.name, "TEAMID AND VALUE.NAME");
-            var league = showLeague(value.name);
-            // console.log(league);
-            
-            // $('.results').append(league);
-            $('.results').append(league);
+
+            var leagueShown = showLeague(value.name);
+            $('.results').append(leagueShown);
         });
     });
 }
 
-// function getTeam(seasonID) {
-//     $.ajax({
-//         headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
-//         url: 'http://api.football-data.org/v1/soccerseasons/' + seasonID + '/teams',
-//         dataType: 'json',
-//         type: 'GET',
-//     }).done(function(response) {
-//         // console.log(response);
-//         $('.results').html('');
-
-//         teamHashMap = {};
-//         $.each(response.teams, function(key, value) {
-//             var hrefTeams = value._links.fixtures.href;
-//             var teamID = hrefTeams.match(/\d/g).join("").slice(1);
-//             teamHashMap[value.name] = teamID;
-//             // console.log(teamID, value.name, "TEAMID AND VALUE.NAME");
-//             var league = showLeague(value.name);
-//             // console.log(league);
-            
-//             // $('.results').append(league);
-//             $('.results').append(league);
-//         });
-//     });
-// }
-
-function showLeague (name) {
-    var link = '<div><a>' + name + '</a></div>';
-    return link;
-    // return result;
+// Get team data from API
+function getTeam(teamID) {
+    $.ajax({
+        headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
+        url: 'http://api.football-data.org/v1/teams/' + teamID,
+        dataType: 'json',
+        type: 'GET',
+    }).done(function(response) {
+        $('.results').html('');
+        var teamShown = showTeam(response);
+        $('.results').append(teamShown);
+    });
 }
 
-// function showTeam (id, name) {
-//     var copy = $('.template .team').clone();
-//     var link = '<p><a target="_blank" ' + 'href="http://api.football-data.org/v1/teams/' + id + '">' + name + '</a></p>';
-//     return link;
-//     // return result;
-// }
+// Get player data from API
+function getPlayer(teamID) {
+    $.ajax({
+        headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
+        url: 'http://api.football-data.org/v1/teams/' + teamID + '/players',
+        dataType: 'json',
+        type: 'GET',
+    }).done(function(response) {
+        $('.results .players-detail-container').html('');
+
+        $.each(response.players, function(key, value) {
+            var playerShown = showPlayer(value.name, value.position, value.jerseyNumber, value.nationality, value.marketValue);
+            
+            $('.results .players-detail-container').append(playerShown);
+        });
+    });
+}
+
+// Display league info on HTML
+function showLeague(league) {
+    var link = '<div><a class="clubs">' + league + '</a></div>';
+    return link;
+}
+
+// Display team info on HTML
+function showTeam(team) {
+    // Clone template
+    var copy = $('.template .team').clone();
+
+    // Set team crest
+    var crest = copy.find('.team-crest img');
+    crest.attr('src', team.crestUrl);
+
+    // Set team name
+    var name = copy.find('.team-name');
+    name.text(team.name);
+
+    // Set team market value
+
+    var marketvalue = copy.find('.team-marketvalue');
+    marketvalue.text(team.squadMarketValue);
+
+    return copy;
+}
+
+function showPlayer(player, position, number, nationality, value) {
+    // Clone template
+    var copy = $('.template .players').clone();
+
+    // Set player name
+    var playerName = copy.find('.players-name');
+    playerName.text(player);
+
+    // Set player jersey number
+    var playerNumber = copy.find('.players-number');
+    playerNumber.text(number + '. ');
+
+    // Set player position
+    var playerPosition = copy.find('.players-position');
+    playerPosition.text(' - ' + position);
+
+    // Set player nationality
+    var playerNationality = copy.find('.players-nationality');
+    playerNationality.text('(' + nationality + ') : ');
+
+    // Set player value
+    var playerValue = copy.find('.players-value');
+    playerValue.text(', ' + value);
+
+    return copy;
+}

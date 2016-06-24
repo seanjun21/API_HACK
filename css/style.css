@@ -97,18 +97,32 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 0 auto;
 }
 
+.results {
+	padding-bottom: 2rem;
+}
+
 .title-home {
-	margin-top: 6.250rem;
-}
-
-.img-home {
-	padding-top: 3.125rem;
-}
-
-.search-home {
-	text-align: center;
+	margin-top: 3rem;
 }
 
 .hidden {
 	display: none;
+}
+
+.team {
+	max-width: 500px;
+	margin: auto;
+}
+
+dt {
+	font-weight: bolder;
+}
+
+dd, dt {
+	margin-top: 1rem;
+	display: inline-block;
+}
+
+.players-position {
+	color: blue;
 }
