@@ -91,6 +91,19 @@ h1, h2, h3, h4, h5, h6 {
 	line-height: 1.1em;
 }
 
+dt {
+	font-weight: bolder;
+}
+
+dd, dt {
+	margin-top: 1rem;
+	display: inline-block;
+}
+
+td {
+	text-align: left;
+}
+
 .home {
 	max-width: 37.5rem;
 	padding: 0.938em;
@@ -102,7 +115,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .title-home {
-	margin-top: 3rem;
+	margin-top: 3.5rem;
+	margin-bottom: 0;
+	font-family: 'Bungee Shade', cursive;
+	font-size: 3rem;
 }
 
 .hidden {
@@ -110,19 +126,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .team {
-	max-width: 500px;
+	max-width: 45rem;
 	margin: auto;
 }
 
-dt {
+.categories {
 	font-weight: bolder;
-}
-
-dd, dt {
-	margin-top: 1rem;
-	display: inline-block;
 }
 
 .players-position {
 	color: blue;
+}
+
+#eac-container-square {
+	top: 34px;
 }

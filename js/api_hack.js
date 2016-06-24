@@ -13,7 +13,7 @@ $(function() {
     loadSite();
     $('.home-search').submit(function(event) {
         event.preventDefault();
-        var searchTerm = $('.form-control').val();
+        var searchTerm = $('#square').val();
         getLeague(leagueHashMap[searchTerm]);
     });
     $('.results').on('click', '.clubs', function(event) {
@@ -44,7 +44,6 @@ function loadSite() {
         });
         var options = {
             data: data,
-            theme: "square",
             list: {
                 maxNumberOfElements: 13,
                 match: {
@@ -68,6 +67,7 @@ function getLeague(leagueID) {
 
         teamHashMap = {};
         $.each(response.teams, function(key, value) {
+            // Retrieved url from API --> Retrived numbers from url --> Sliced front to get teamID
             var hrefTeams = value._links.fixtures.href;
             var teamID = hrefTeams.match(/\d/g).join("").slice(1);
             teamHashMap[value.name] = teamID;
@@ -100,12 +100,12 @@ function getPlayer(teamID) {
         dataType: 'json',
         type: 'GET',
     }).done(function(response) {
-        $('.results .players-detail-container').html('');
-
+        $('.results .extra-container').html('<table class="table" id="players-result"></table>');
+        $('.players #category').clone().appendTo('#players-result');
         $.each(response.players, function(key, value) {
             var playerShown = showPlayer(value.name, value.position, value.jerseyNumber, value.nationality, value.marketValue);
-            
-            $('.results .players-detail-container').append(playerShown);
+
+            $('.results #players-result').append(playerShown);
         });
     });
 }
@@ -139,7 +139,7 @@ function showTeam(team) {
 
 function showPlayer(player, position, number, nationality, value) {
     // Clone template
-    var copy = $('.template .players').clone();
+    var copy = $('.template #values ').clone();
 
     // Set player name
     var playerName = copy.find('.players-name');
@@ -147,19 +147,19 @@ function showPlayer(player, position, number, nationality, value) {
 
     // Set player jersey number
     var playerNumber = copy.find('.players-number');
-    playerNumber.text(number + '. ');
+    playerNumber.text(number);
 
     // Set player position
     var playerPosition = copy.find('.players-position');
-    playerPosition.text(' - ' + position);
+    playerPosition.text(position);
 
     // Set player nationality
     var playerNationality = copy.find('.players-nationality');
-    playerNationality.text('(' + nationality + ') : ');
+    playerNationality.text(nationality);
 
     // Set player value
     var playerValue = copy.find('.players-value');
-    playerValue.text(', ' + value);
+    playerValue.text(value);
 
     return copy;
 }
