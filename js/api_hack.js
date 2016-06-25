@@ -35,7 +35,7 @@ $(function() {
 function loadSite() {
     $.ajax({
         headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
-        url: 'http://api.football-data.org/v1/soccerseasons',
+        url: 'https://api.football-data.org/v1/soccerseasons',
         dataType: 'json',
         type: 'GET',
     }).done(function(response) {
@@ -63,7 +63,7 @@ function loadSite() {
 function getLeague(leagueID) {
     $.ajax({
         headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
-        url: 'http://api.football-data.org/v1/soccerseasons/' + leagueID + '/leagueTable',
+        url: 'https://api.football-data.org/v1/soccerseasons/' + leagueID + '/leagueTable',
         dataType: 'json',
         type: 'GET',
     }).done(function(response) {
@@ -111,7 +111,7 @@ function getLeague(leagueID) {
 function getTeam(teamID) {
     $.ajax({
         headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
-        url: 'http://api.football-data.org/v1/teams/' + teamID,
+        url: 'https://api.football-data.org/v1/teams/' + teamID,
         dataType: 'json',
         type: 'GET',
     }).done(function(response) {
@@ -125,7 +125,7 @@ function getTeam(teamID) {
 function getPlayer(teamID) {
     $.ajax({
         headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
-        url: 'http://api.football-data.org/v1/teams/' + teamID + '/players',
+        url: 'https://api.football-data.org/v1/teams/' + teamID + '/players',
         dataType: 'json',
         type: 'GET',
     }).done(function(response) {
