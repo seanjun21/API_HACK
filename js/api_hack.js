@@ -156,7 +156,6 @@ function getHighlight(searchTerm) {
         });
         $('.results .highlights-detail-container').html(html).append('<iframe width="775px" height="436px" name="iframe_a"></iframe>');
     });
-
 }
 
 
