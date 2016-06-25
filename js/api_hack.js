@@ -25,7 +25,10 @@ $(function() {
         event.preventDefault();
         getPlayer(teamHashMap[searchTerm]);
     });
-
+    $('.results').on('click', '.highlights-detail', function(event) {
+        event.preventDefault();
+        getHighlight(searchTerm);
+    });
 });
 
 // Loading website
@@ -87,25 +90,19 @@ function getLeague(leagueID) {
                 $('.results').append('<table class="table" id="champs-result-' + key + '"></table>');
                 $('.champs #champs-category').clone().appendTo('#champs-result-' + key);
 
-                console.log(value, 'VAUE');
-
-
-
+                // Run each method again over 4 teams
                 $.each(value, function(index, value) {
 
                     var teamID = value.teamId;
                     teamHashMap[value.team] = teamID;
-                    var champsShown = showChamps(value.group, value.rank, value.crestURI, value.team, value.playedGames, value.goals, value.points);
-                    $('.results #champs-result-' + key).append(champsShown);
 
+                    // Set variable ChampsShown and use it to store outcome of showChamps function
+                    var champsShown = showChamps(value.group, value.rank, value.crestURI, value.team, value.playedGames, value.goals, value.points);
+
+                    // Append the outcome to new table
+                    $('.results #champs-result-' + key).append(champsShown);
                 });
             });
-            console.log(teamHashMap, 'teamHashMap');
-            // Run each method again over 4 teams
-
-            // Set variable ChampsShown and use it to store outcome of showChamps function
-
-            // Append the outcome to new table
         }
     });
 }
@@ -132,7 +129,7 @@ function getPlayer(teamID) {
         dataType: 'json',
         type: 'GET',
     }).done(function(response) {
-        $('.results .extra-container').html('<table class="table" id="players-result"></table>');
+        $('.results .players-detail-container').html('<table class="table" id="players-result"></table>');
         $('.players #players-category').clone().appendTo('#players-result');
         $.each(response.players, function(key, value) {
             var playerShown = showPlayer(value.name, value.position, value.jerseyNumber, value.nationality, value.marketValue);
@@ -141,6 +138,27 @@ function getPlayer(teamID) {
         });
     });
 }
+
+function getHighlight(searchTerm) {
+    $.ajax({
+        url: 'https://www.googleapis.com/youtube/v3/search',
+        datatype: 'json',
+        data: {
+            part: 'snippet',
+            key: 'AIzaSyC-ClHe3ITaHtgy2KsW0ntuCFOmyxIQXhg',
+            q: searchTerm
+        }
+    }).done(function(results) {
+        var html = "";
+        $.each(results.items, function(key, value) {
+            html += '<a href="' + 'https://www.youtube.com/embed/' + value.id.videoId + '" target="iframe_a">' +
+                '<img src="' + value.snippet.thumbnails.default.url + '" alt="" />' + '</a>';
+        });
+        $('.results .highlights-detail-container').html(html).append('<iframe width="775px" height="436px" name="iframe_a"></iframe>');
+    });
+
+}
+
 
 // Display champs info on HTML
 function showChamps(groups, rank, crest, name, games, goals, points) {
@@ -236,7 +254,6 @@ function showTeam(team) {
     name.text(team.name);
 
     // Set team market value
-
     var marketvalue = copy.find('.team-marketvalue');
     marketvalue.text(team.squadMarketValue);
 

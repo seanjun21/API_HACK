@@ -121,6 +121,10 @@ tr {
     text-align:center; 
 }
 
+.container-fluid {
+	margin-bottom: 4rem;
+}
+
 .home {
 	max-width: 37.5rem;
 	padding: 0.938em;
@@ -128,7 +132,6 @@ tr {
 }
 
 .results {
-	margin-bottom: 3.5rem;
 	max-width: 60rem;
 	margin: auto;
 }
@@ -153,7 +156,7 @@ tr {
 	font-weight: bolder;
 }
 
-#league-values, #champs-values td {
+#league-values td, #champs-values td {
 	vertical-align: middle;
 }
 
