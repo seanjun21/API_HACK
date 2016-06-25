@@ -35,7 +35,7 @@ $(function() {
 function loadSite() {
     $.ajax({
         headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
-        url: 'https://api.football-data.org/v1/soccerseasons',
+        url: 'http://api.football-data.org/v1/soccerseasons',
         dataType: 'json',
         type: 'GET',
     }).done(function(response) {
@@ -63,7 +63,7 @@ function loadSite() {
 function getLeague(leagueID) {
     $.ajax({
         headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
-        url: 'https://api.football-data.org/v1/soccerseasons/' + leagueID + '/leagueTable',
+        url: 'http://api.football-data.org/v1/soccerseasons/' + leagueID + '/leagueTable',
         dataType: 'json',
         type: 'GET',
     }).done(function(response) {
@@ -111,7 +111,7 @@ function getLeague(leagueID) {
 function getTeam(teamID) {
     $.ajax({
         headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
-        url: 'https://api.football-data.org/v1/teams/' + teamID,
+        url: 'http://api.football-data.org/v1/teams/' + teamID,
         dataType: 'json',
         type: 'GET',
     }).done(function(response) {
@@ -125,7 +125,7 @@ function getTeam(teamID) {
 function getPlayer(teamID) {
     $.ajax({
         headers: { 'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a' },
-        url: 'https://api.football-data.org/v1/teams/' + teamID + '/players',
+        url: 'http://api.football-data.org/v1/teams/' + teamID + '/players',
         dataType: 'json',
         type: 'GET',
     }).done(function(response) {
@@ -141,7 +141,7 @@ function getPlayer(teamID) {
 
 function getHighlight(searchTerm) {
     $.ajax({
-        url: 'https://www.googleapis.com/youtube/v3/search',
+        url: 'http://www.googleapis.com/youtube/v3/search',
         datatype: 'json',
         data: {
             part: 'snippet',
@@ -151,7 +151,7 @@ function getHighlight(searchTerm) {
     }).done(function(results) {
         var html = "";
         $.each(results.items, function(key, value) {
-            html += '<a href="' + 'https://www.youtube.com/embed/' + value.id.videoId + '" target="iframe_a">' +
+            html += '<a href="' + 'http://www.youtube.com/embed/' + value.id.videoId + '" target="iframe_a">' +
                 '<img src="' + value.snippet.thumbnails.default.url + '" alt="" />' + '</a>';
         });
         $('.results .highlights-detail-container').html(html).append('<iframe width="775px" height="436px" name="iframe_a"></iframe>');
