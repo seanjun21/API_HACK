@@ -91,17 +91,34 @@ h1, h2, h3, h4, h5, h6 {
 	line-height: 1.1em;
 }
 
-dt {
+/* unvisited link */
+a:link {
+    color: red;
+}
+
+/* visited link */
+a:visited {
+    color: green;
+}
+
+/* mouse over link */
+a:hover {
+    color: hotpink;
+}
+
+/* selected link */
+a {
+    color: black;
+    font-weight: bolder;
+}
+
+dd {
+	margin: 1rem 0;
 	font-weight: bolder;
 }
 
-dd, dt {
-	margin-top: 1rem;
-	display: inline-block;
-}
-
-td {
-	text-align: left;
+tr {
+    text-align:center; 
 }
 
 .home {
@@ -111,7 +128,9 @@ td {
 }
 
 .results {
-	padding-bottom: 2rem;
+	margin-bottom: 3.5rem;
+	max-width: 60rem;
+	margin: auto;
 }
 
 .title-home {
@@ -134,8 +153,16 @@ td {
 	font-weight: bolder;
 }
 
-.players-position {
-	color: blue;
+#league-values, #champs-values td {
+	vertical-align: middle;
+}
+
+.clubs {
+	margin: 1rem 0;
+}
+
+.team-name {
+	margin-top: 0;
 }
 
 #eac-container-square {
