@@ -46,6 +46,8 @@ function loadSite() {
       data.push( value.caption );
       leagueHashMap[ value.caption ] = value.id;
     } );
+          console.log(leagueHashMap, '<-----League HashMap');
+
     var options = {
       data: data,
       list: {
@@ -81,6 +83,7 @@ function getLeague( leagueID ) {
 
         $( '.results #league-result' ).append( leagueShown );
       } );
+      console.log(teamHashMap, '<---teamHashMap');
     } else {
 
       // Clear our results and append new table set for Champs
