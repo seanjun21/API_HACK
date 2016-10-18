@@ -69,7 +69,7 @@ function getLeague(leagueID) {
         dataType: 'json',
         type: 'GET'
     }).done(function (response) {
-        if (response.leagueCaption !== "Champions League 2015/16") {
+        if (response.leagueCaption !== "Champions League 2016/17") {
             $('.results').html('<table class="table" id="league-result"></table>');
             $('.league #league-category').clone().appendTo('#league-result');
             $.each(response.standing, function (key, value) {
