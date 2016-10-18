@@ -35,7 +35,7 @@ $(function () {
 function loadSite() {
     $.ajax({
         headers: {'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a'},
-        url: 'https://api.football-data.org/v1/soccerseasons',
+        url: 'https://api.football-data.org/v1/competitions',
         dataType: 'json',
         type: 'GET'
     }).done(function (response) {
@@ -65,7 +65,7 @@ function loadSite() {
 function getLeague(leagueID) {
     $.ajax({
         headers: {'X-Auth-Token': 'e34ad8f9aebb436eb3437851ca9b581a'},
-        url: 'https://api.football-data.org/v1/soccerseasons/' + leagueID + '/leagueTable',
+        url: 'https://api.football-data.org/v1/competitions/' + leagueID + '/leagueTable',
         dataType: 'json',
         type: 'GET'
     }).done(function (response) {
