@@ -140,7 +140,7 @@ tr {
 	margin-top: 3.5rem;
 	margin-bottom: 0;
 	font-family: 'Bungee Shade', cursive;
-	font-size: 3rem;
+	font-size: 5vw;
 }
 
 .hidden {
@@ -171,3 +171,8 @@ tr {
 #eac-container-square {
 	top: 34px;
 }
+
+.img-home {
+	width: 80%;
+}
+
