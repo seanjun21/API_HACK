@@ -74,8 +74,10 @@ body {
 	text-align: center;
 }
 
-input, select, textarea {
-	font: 16px "Open Sans", Helvetica, Arial, sans-serif;
+@media screen and (max-width: 620px) {
+	body {
+		font-size: 10px;
+	}
 }
 
 ::selection {
