@@ -76,7 +76,7 @@ body {
 
 @media screen and (max-width: 620px) {
 	body {
-		font-size: 13px;
+		font-size: 12px;
 	}
 
 	.col-md-1, .col-md-2, .col-md-3 {
